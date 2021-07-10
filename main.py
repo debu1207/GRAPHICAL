@@ -4,7 +4,7 @@ import sys
 import os
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QTextEdit, QMessageBox, QFileDialog, QComboBox
 from PyQt5.QtGui import QPixmap, QFont, QIcon
-
+from PyQt5.QtCore import Qt
 
 # from PyQt5.QtCore import QComboBox
 
@@ -22,6 +22,7 @@ class App(QWidget):
         self.height = 900
 
         self.theme = self.plotDarkTheme
+        self.defaultGraphBackground = Qt.black
 
         self.name = QLabel(self)
         self.name.setFont(QFont("Courier", 20))
@@ -77,7 +78,7 @@ class App(QWidget):
         self.save_button.setGeometry(50, 185, 60, 30)
         self.save_button.setStyleSheet("border: 1px solid white; border-radius: 7px;")
         self.save_button.setText('Save')
-        self.save_button.clicked.connect(self.file_save)
+        self.save_button.clicked.connect(self.showdialog)
 
         self.clearBtn = QPushButton(self)
         self.clearBtn.setGeometry(115, 185, 60, 30)
@@ -136,9 +137,37 @@ class App(QWidget):
         self.fillcolor.activated[str].connect(self.changeColor)
 
         self.photo = QLabel(self)
-        self.photo.setGeometry(180, 290, 649, 497)
+        self.photo.setGeometry(260, 320, 649, 497)
         self.photo.setStyleSheet("border: 7px solid gray; border-radius: 6px")
         # self.photo.setStyleSheet("border-radius: 10px;")
+
+        self.Title = QLabel(self)
+        self.Title.setFont(QFont("Courier", 10))
+        self.Title.setGeometry(35, 315, 70, 30)
+        self.Title.setText("Title:")
+
+        self.titleedit = QTextEdit(self)
+        self.titleedit.setGeometry(30, 350, 200, 30)
+        self.titleedit.setStyleSheet("border: 2px solid white; border-radius: 3px;")
+
+        self.LabelX = QLabel(self)
+        self.LabelX.setFont(QFont("Courier", 10))
+        self.LabelX.setGeometry(35, 390, 130, 30)
+        self.LabelX.setText("x-axis Label:")
+
+        self.xlabeledit = QTextEdit(self)
+        self.xlabeledit.setGeometry(30, 425, 200, 30)
+        self.xlabeledit.setStyleSheet("border: 2px solid white; border-radius: 3px;")
+
+        self.LabelY = QLabel(self)
+        self.LabelY.setFont(QFont("Courier", 10))
+        self.LabelY.setGeometry(35, 455, 130, 30)
+        self.LabelY.setText("y-axis Label:")
+
+        self.ylabeledit = QTextEdit(self)
+        self.ylabeledit.setGeometry(30, 490, 200, 30)
+        self.ylabeledit.setStyleSheet("border: 2px solid white; border-radius: 3px;")
+
         self.initUI()
 
     def initUI(self):
@@ -149,6 +178,12 @@ class App(QWidget):
     def clear(self):
         self.edit.setText("")
         self.yedit.setText("")
+        self.xlabeledit.setText("")
+        self.ylabeledit.setText("")
+        self.titleedit.setText("")
+        pixmap = QPixmap(649, 497)
+        pixmap.fill(self.defaultGraphBackground)
+        self.photo.setPixmap(pixmap)
 
     def showdialog(self):
         msg = QMessageBox()
@@ -186,6 +221,7 @@ class App(QWidget):
     def changeTheme(self, text):
         if text == "Dark":
             self.theme = self.plotDarkTheme
+            self.defaultGraphBackground = Qt.black
             self.setStyleSheet("background-color: black; color: white")
             self.name.setStyleSheet("border: 2px solid white; border-radius: 5px;")
             self.edit.setStyleSheet("border: 2px solid white; border-radius: 3px;")
@@ -205,6 +241,7 @@ class App(QWidget):
 
         elif text == 'Light':
             self.theme = self.plotLightTheme
+            self.defaultGraphBackground = Qt.white
             self.setStyleSheet("background-color: white; color: black")
             self.name.setStyleSheet("border: 2px solid grey; border-radius: 5px;")
             self.edit.setStyleSheet("border: 2px solid grey; border-radius: 3px;")
@@ -241,8 +278,9 @@ class App(QWidget):
         fig = plt.figure()
         plt.ion()
         plt.plot(ypoints, self.Lines[self.lineStyle], marker = self.Markers[self.marker], color=self.color)
-        plt.xlabel("x")
-        plt.ylabel("y")
+        plt.xlabel(self.xlabeledit.toPlainText())
+        plt.ylabel(self.ylabeledit.toPlainText())
+        plt.title(self.titleedit.toPlainText())
         # plt.legend()
         plt.ioff()
         plt.savefig("new_image.png")
@@ -259,8 +297,9 @@ class App(QWidget):
         fig = plt.figure()
         plt.ion()
         plt.bar(xpoints, ypoints, color=self.color)
-        plt.xlabel("x")
-        plt.ylabel("y")
+        plt.xlabel(self.xlabeledit.toPlainText())
+        plt.ylabel(self.ylabeledit.toPlainText())
+        plt.title(self.titleedit.toPlainText())
         # plt.legend()
         plt.ioff()
         plt.savefig("new_image.png")
@@ -277,8 +316,9 @@ class App(QWidget):
         fig = plt.figure()
         plt.ion()
         plt.pie(ypoints)
-        plt.xlabel("x")
-        plt.ylabel("y")
+        plt.xlabel(self.xlabeledit.toPlainText())
+        plt.ylabel(self.ylabeledit.toPlainText())
+        plt.title(self.titleedit.toPlainText())
         # plt.legend()
         plt.ioff()
         plt.savefig("new_image.png")
@@ -296,8 +336,9 @@ class App(QWidget):
         fig = plt.figure()
         plt.ion()
         plt.scatter(xpoints, ypoints, marker = self.Markers[self.marker], color=self.color)
-        plt.xlabel("x")
-        plt.ylabel("y")
+        plt.xlabel(self.xlabeledit.toPlainText())
+        plt.ylabel(self.ylabeledit.toPlainText())
+        plt.title(self.titleedit.toPlainText())
         # plt.legend()
         plt.ioff()
         plt.savefig("new_image.png")
