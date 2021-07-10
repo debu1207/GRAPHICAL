@@ -21,6 +21,8 @@ class App(QWidget):
         self.width = 1000
         self.height = 900
 
+        self.theme = self.plotDarkTheme
+
         self.name = QLabel(self)
         self.name.setFont(QFont("Courier", 20))
         self.name.setText("GRAPHICAL")
@@ -50,8 +52,8 @@ class App(QWidget):
         self.button = QPushButton(self)
         self.button.setGeometry(270, 110, 60, 30)
         self.button.setStyleSheet("border: 1px solid white; border-radius: 7px;")
-        self.button.setText("Plot")
-        self.button.clicked.connect(self.plot)
+        self.button.setText("line")
+        self.button.clicked.connect(self.line)
 
         self.button1 = QPushButton(self)
         self.button1.setGeometry(335, 110, 60, 30)
@@ -156,8 +158,21 @@ class App(QWidget):
         except:
             print("Error")
 
+    def plotDarkTheme(self):
+        self.button.setStyleSheet("border: 1px solid white; color: white; border-radius: 7px;")
+        self.button1.setStyleSheet("border: 1px solid white; color: white; border-radius: 7px;")
+        self.button2.setStyleSheet("border: 1px solid white; color: white; border-radius: 7px;")
+        self.button3.setStyleSheet("border: 1px solid white; color: white; border-radius: 7px;")
+
+    def plotLightTheme(self):
+        self.button.setStyleSheet("border: 1px solid grey; color: black; border-radius: 7px;")
+        self.button1.setStyleSheet("border: 1px solid grey; color: black; border-radius: 7px;")
+        self.button2.setStyleSheet("border: 1px solid grey; color: black; border-radius: 7px;")
+        self.button3.setStyleSheet("border: 1px solid grey; color: black; border-radius: 7px;")
+
     def changeTheme(self, text):
         if text == "Dark":
+            self.theme = self.plotDarkTheme
             self.setStyleSheet("background-color: black; color: white")
             self.name.setStyleSheet("border: 2px solid white; border-radius: 5px;")
             self.edit.setStyleSheet("border: 2px solid white; border-radius: 3px;")
@@ -175,6 +190,7 @@ class App(QWidget):
             self.clearBtn.setStyleSheet("border: 1px solid white; border-radius: 7px;")
 
         elif text == 'Light':
+            self.theme = self.plotLightTheme
             self.setStyleSheet("background-color: white; color: black")
             self.name.setStyleSheet("border: 2px solid grey; border-radius: 5px;")
             self.edit.setStyleSheet("border: 2px solid grey; border-radius: 3px;")
@@ -197,7 +213,9 @@ class App(QWidget):
     def changeMarker(self, text):
         self.marker = text
 
-    def plot(self):
+    def line(self):
+        self.theme()
+        self.button.setStyleSheet("background-color: lightblue; color: black; border: 1px solid grey; border-radius: 7px;")
         arr = self.edit.toPlainText().strip().split()
 
         arr = [int(i) for i in arr]
@@ -213,6 +231,8 @@ class App(QWidget):
         self.photo.setPixmap(QPixmap('new_image.png'))
 
     def bar(self):
+        self.theme()
+        self.button2.setStyleSheet("background-color: lightblue; color: black; border: 1px solid grey; border-radius: 7px;")
         arr = self.edit.toPlainText().strip().split()
 
         arr = [int(i) for i in arr]
@@ -230,6 +250,8 @@ class App(QWidget):
         self.photo.setPixmap(QPixmap('new_image.png'))
 
     def pie(self):
+        self.theme()
+        self.button3.setStyleSheet("background-color: lightblue; color: black; border: 1px solid grey; border-radius: 7px;")
         arr = self.edit.toPlainText().strip().split()
 
         arr = [int(i) for i in arr]
@@ -246,6 +268,8 @@ class App(QWidget):
         self.photo.setPixmap(QPixmap('new_image.png'))
 
     def scatter(self):
+        self.theme()
+        self.button1.setStyleSheet("background-color: lightblue; color: black; border: 1px solid grey; border-radius: 7px;")
         x = self.edit.toPlainText().strip().split()
         y = self.yedit.toPlainText().strip().split()
 
