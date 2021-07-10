@@ -94,6 +94,7 @@ class App(QWidget):
 
         self.lineStyle = 'solid'
         self.marker = 'point'
+        self.color = 'blue'
 
         self.Lines = {'solid': '-', 'dotted': ':', 'dashed':'--', 'dashdot':'-.'}
         self.Markers = {'none': ' ', 'point': '.', 'circle':'o', 'triangle':'^', 'square': 's', 'pentagon': 'p', 'star': '*', 'plus': '+', 'diamond': 'D'}
@@ -121,6 +122,18 @@ class App(QWidget):
         self.mark.move(540, 190)
         self.mark.resize(80, 20)
         self.mark.activated[str].connect(self.changeMarker)
+
+        self.selectColor = QLabel(self)
+        self.selectColor.setFont(QFont("Courier", 10))
+        self.selectColor.setGeometry(650, 185, 70, 30)
+        self.selectColor.setText("Color ")
+
+        self.fillcolor = QComboBox(self)
+        self.fillcolor.addItems(['blue', 'green', 'yellow', 'black', 'red', 'pink', 'orange'])
+        self.fillcolor.setStyleSheet("border: 1px solid white; border-radius: 3px;")
+        self.fillcolor.move(705, 190)
+        self.fillcolor.resize(80, 20)
+        self.fillcolor.activated[str].connect(self.changeColor)
 
         self.photo = QLabel(self)
         self.photo.setGeometry(180, 290, 649, 497)
@@ -181,6 +194,7 @@ class App(QWidget):
             self.Themes.setStyleSheet("border: 1px solid white; border-radius: 3px;")
             self.mark.setStyleSheet("border: 1px solid white; border-radius: 3px;")
             self.line.setStyleSheet("border: 1px solid white; border-radius: 3px;")
+            self.fillcolor.setStyleSheet("border: 1px solid white; border-radius: 3px;")
 
             self.button.setStyleSheet("border: 1px solid white; border-radius: 7px;")
             self.button1.setStyleSheet("border: 1px solid white; border-radius: 7px;")
@@ -199,6 +213,7 @@ class App(QWidget):
             self.Themes.setStyleSheet("border: 1px solid grey; border-radius: 3px;")
             self.mark.setStyleSheet("border: 1px solid grey; border-radius: 3px;")
             self.line.setStyleSheet("border: 1px solid grey; border-radius: 3px;")
+            self.fillcolor.setStyleSheet("border: 1px solid grey; border-radius: 3px;")
 
             self.button.setStyleSheet("border: 1px solid grey; border-radius: 7px;")
             self.button1.setStyleSheet("border: 1px solid grey; border-radius: 7px;")
@@ -213,6 +228,9 @@ class App(QWidget):
     def changeMarker(self, text):
         self.marker = text
 
+    def changeColor(self, text):
+        self.color = text
+
     def line(self):
         self.theme()
         self.button.setStyleSheet("background-color: lightblue; color: black; border: 1px solid grey; border-radius: 7px;")
@@ -222,7 +240,7 @@ class App(QWidget):
         ypoints = np.array(arr)
         fig = plt.figure()
         plt.ion()
-        plt.plot(ypoints, self.Lines[self.lineStyle], marker = self.Markers[self.marker])
+        plt.plot(ypoints, self.Lines[self.lineStyle], marker = self.Markers[self.marker], color=self.color)
         plt.xlabel("x")
         plt.ylabel("y")
         # plt.legend()
@@ -240,7 +258,7 @@ class App(QWidget):
         xpoints = np.array([(i + 1) for i in range(len(ypoints))])
         fig = plt.figure()
         plt.ion()
-        plt.bar(xpoints, ypoints, color="blue")
+        plt.bar(xpoints, ypoints, color=self.color)
         plt.xlabel("x")
         plt.ylabel("y")
         # plt.legend()
@@ -277,7 +295,7 @@ class App(QWidget):
         ypoints = np.array([int(i) for i in y])
         fig = plt.figure()
         plt.ion()
-        plt.scatter(xpoints, ypoints, marker = self.Markers[self.marker])
+        plt.scatter(xpoints, ypoints, marker = self.Markers[self.marker], color=self.color)
         plt.xlabel("x")
         plt.ylabel("y")
         # plt.legend()
