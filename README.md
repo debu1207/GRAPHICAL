@@ -15,5 +15,5 @@ Images given below shows some of the functions.
   ![graph3](https://user-images.githubusercontent.com/66241098/125988062-5b1a5d21-da93-4b71-af66-5ce2273bcaef.jpg)
 
 
-You have give the points in the input box at the top left and then select the which type of graph you want.
+You have to give the data points in the input box at the top left and then select the which type of graph you want.
 You can select linestyle, marker style, color. You can put title, xlabel, ylabel and even change the dark theme to a light theme.
